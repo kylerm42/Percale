@@ -146,7 +146,19 @@ fun <A> Codec<A>.toSerializer(typeDescriptor: SerialDescriptor? = null): KSerial
                     }
                     encoder.encodeSerializableValue(TagSerializer, result.orThrow as Tag)
                 }
-                else -> throw Exception("Unknown ops type!: $pass (${pass::class.simpleName})")
+                else -> {
+                    // Any other DynamicOps (e.g. Minecraft's HashOps used to hash item components for
+                    // container click packets): let the codec encode with the ops and push the result as-is.
+                    @Suppress("UNCHECKED_CAST")
+                    val rawEncoder = encoder as PassEncoder<Any>
+                    @Suppress("UNCHECKED_CAST")
+                    val rawCodec = this@toSerializer as Codec<A>
+                    val result = rawCodec.encodeStart(pass as DynamicOps<Any>, value)
+                    if (result.isError) {
+                        throw SerializationException("Cannot auto-serialize codec, msg: ${result.error().get().message()}")
+                    }
+                    rawEncoder.push(result.orThrow)
+                }
             }
         }
         override fun deserialize(decoder: Decoder): A {
