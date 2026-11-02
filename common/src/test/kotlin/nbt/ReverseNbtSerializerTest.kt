@@ -24,25 +24,25 @@ class ReverseNbtSerializerTest {
     @Test
     fun testRoundTripFloatTag() {
         val input = FloatTag.valueOf(1.5f)
-        expectThat(ops.deserialize(ops.serialize(input, serializer), serializer)).isEqualTo(input)
+        expectThat(ops.deserialize(ops.serialize(input, serializer)!!, serializer)).isEqualTo(input)
     }
 
     @Test
     fun testRoundTripDoubleTag() {
         val input = DoubleTag.valueOf(2.25)
-        expectThat(ops.deserialize(ops.serialize(input, serializer), serializer)).isEqualTo(input)
+        expectThat(ops.deserialize(ops.serialize(input, serializer)!!, serializer)).isEqualTo(input)
     }
 
     @Test
     fun testRoundTripByteArrayTag() {
         val input = ByteArrayTag(byteArrayOf(1, 2, 3))
-        expectThat(ops.deserialize(ops.serialize(input, serializer), serializer)).isEqualTo(input)
+        expectThat(ops.deserialize(ops.serialize(input, serializer)!!, serializer)).isEqualTo(input)
     }
 
     @Test
     fun testRoundTripLongArrayTag() {
         val input = LongArrayTag(longArrayOf(4L, 5L, 6L))
-        expectThat(ops.deserialize(ops.serialize(input, serializer), serializer)).isEqualTo(input)
+        expectThat(ops.deserialize(ops.serialize(input, serializer)!!, serializer)).isEqualTo(input)
     }
 
     @Test
@@ -56,6 +56,6 @@ class ReverseNbtSerializerTest {
             put("count", IntTag.valueOf(4))
         }
 
-        expectThat(ops.deserialize(ops.serialize(input, serializer), serializer)).isEqualTo(input)
+        expectThat(ops.deserialize(ops.serialize(input, serializer)!!, serializer)).isEqualTo(input)
     }
 }

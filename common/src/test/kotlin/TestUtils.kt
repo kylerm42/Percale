@@ -22,7 +22,7 @@ data class TestValidation<U : Any>(val obj: U, val serial: KSerializer<U>, val s
     fun <T> parsed(ops: DynamicOps<T>): T {
         return when(ops) {
             JsonOps.INSTANCE -> JsonParser.parseString(str) as T
-            NbtOps.INSTANCE -> TagParser.parseTag("{a:$str}").get("a") as T
+            NbtOps.INSTANCE -> TagParser.parseCompoundFully("{a:$str}").get("a") as T
             else -> throw Exception("Not valid!")
         }
     }
